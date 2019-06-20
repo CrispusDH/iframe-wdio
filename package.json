@@ -1,0 +1,42 @@
+{
+  "name": "iframe-wdio",
+  "description": "Check WebdriveriIO working with iframe in mobile-emulation and common modes",
+  "author": "Oleksii Ihnatiuk",
+  "devDependencies": {
+    "cross-env": "5.2.0",
+    "typescript": "3.5.2",
+    "ava": "2.1.0",
+    "webdriverio": "5.10.7",
+    "@types/node": "12.0.8",
+    "webdriver-manager": "12.1.5",
+    "oi-verify": "2.1.0"
+  },
+  "scripts": {
+    "test": "cross-env runningType=direct npm run ava",
+    "sstest": "cross-env runningType=selenoid WDIO_LOG_LEVEL=\"error\" npm run ava && npm run aftertest || npm run aftertest",
+    "pretest": "npm run clean && npm run tsc && npm run server:update && npm run server:start",
+    "posttest": "npm run clean && npm run server:down",
+    "presstest": "npm run clean && npm run tsc && npm run selenoid:download && npm run selenoid:configure && npm run selenoid:start",
+    "aftertest": "npm run selenoid:cleanup && npm run selenoid:stop && npm run selenoid:rm && npm run clean",
+    "server:update": "webdriver-manager update --gecko false --versions.chrome=75.0.3770.90",
+    "server:start": "webdriver-manager start --detach --versions.chrome=75.0.3770.90",
+    "server:down": "lsof -ti tcp:4444 | xargs kill",
+    "tsc": "tsc",
+    "ava": "ava",
+    "clean": "rm -rf dist",
+    "cm:install": "curl -s https://aerokube.com/cm/bash | bash",
+    "selenoid:download": "./cm selenoid download",
+    "selenoid:configure": "./cm selenoid configure --browsers chrome --last-versions 1",
+    "selenoid:start": "./cm selenoid start --args \"--limit 5\"",
+    "selenoid:stop": "./cm selenoid stop",
+    "selenoid:cleanup": "./cm selenoid cleanup",
+    "selenoid:rm": "docker rm -f $(docker ps -aq) || true"
+  },
+  "ava": {
+    "files": [
+      "dist/test/**.js"
+    ],
+    "failWithoutAssertions": false,
+    "verbose": false
+  }
+}

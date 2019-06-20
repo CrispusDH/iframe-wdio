@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "dist",
+    "types": ["webdriverio", "node", "ava"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
+  }
+}
